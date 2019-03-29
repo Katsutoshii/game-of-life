@@ -4,7 +4,7 @@
  * File Created: Wednesday, 27th March 2019 11:11:39 am
  * Author: Josiah Putman (joshikatsu@gmail.com)
  * -----
- * Last Modified: Friday, 29th March 2019 6:22:25 pm
+ * Last Modified: Friday, 29th March 2019 6:39:05 pm
  * Modified By: Josiah Putman (joshikatsu@gmail.com)
  */
 
@@ -12,6 +12,7 @@
 #include <map>
 #include <functional>
 #include <string>
+#include <assert.h>
 
 typedef unsigned int uint;
 
@@ -28,16 +29,20 @@ class GameOfLife
         std::ostream& out;
         bool matrix[(W + 2) * (H + 2)] = {false};
         std::map<uint, bool> updates;
+
         void update();
-        void update_cell(uint n);
+        void update_cell(uint x, uint y);
+
         uint get_n(uint x, uint y);
         uint get_x(uint n);
         uint get_y(uint n);
         bool get(uint n);
         bool get(uint x, uint y);
+
         void set(uint x, uint y, bool alive);
         void set(uint n, bool alive);
         bool in_bounds(uint n);
+        
         uint num_live = 0;
         uint round_num = 0;
 };

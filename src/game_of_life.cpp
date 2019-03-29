@@ -4,7 +4,7 @@
  * File Created: Wednesday, 27th March 2019 11:11:13 am
  * Author: Josiah Putman (joshikatsu@gmail.com)
  * -----
- * Last Modified: Friday, 29th March 2019 6:24:49 pm
+ * Last Modified: Friday, 29th March 2019 6:40:12 pm
  * Modified By: Josiah Putman (joshikatsu@gmail.com)
  */
 #include "game_of_life.hpp"
@@ -104,11 +104,14 @@ void GameOfLife<W, H>::run(uint num_rounds)
 template <uint W, uint H>
 void GameOfLife<W, H>::update()
 {
-	for (uint n = 0; n < W * H; n++) {
-		update_cell(n);
+	
+	for (uint y = 1; y < H-1; y++) {
+		for (uint x = 1; x < W-1; x++) {
+			update_cell(x, y);
+		}
 	}
 	for (auto update : updates) {
-		out << "    Applying update " << update.second << " to cell " << update.first << std::endl;
+		// out << "    Applying update " << update.second << " to cell " << update.first << std::endl;
 		set(update.first, update.second);
 	}
 	updates.clear();
@@ -117,19 +120,24 @@ void GameOfLife<W, H>::update()
 }
 
 template <uint W, uint H>
-void GameOfLife<W, H>::update_cell(uint n)
+void GameOfLife<W, H>::update_cell(uint x, uint y)
 {
+	assert(x > 0 && x < W-1 && "Boundary cells cannot be updated.");
+	assert(y > 0 && y < H-1 && "Boundary cells cannot be updated.");
 	uint alive_count = 0;
-	for (int j = -1; j <= 1; j += 1) {
-		for (int i = -1; i <= 1; i++) {
-			uint m = n + i + (j * W);
-			out << "    m = " << m << std::endl;
-			if (in_bounds(m) && (m != n) && (get(m))) {
+	uint n = get_n(x, y);
+	for (int dy = -1; dy <= 1; dy += 1) {
+		for (int dx = -1; dx <= 1; dx++) {
+			if ((dx | dy) == 0) {
+				continue;
+			}
+			uint m = get_n(x + dx, y + dy);
+			if (matrix[m]) {
 				alive_count++;
 			}
 		}
 	}
-	out << "    Cell " << n << " had " << alive_count << " live neighbors." << std::endl;
+	// out << "    Cell (" << x << ", " << y << ") had " << alive_count << " live neighbors." << std::endl;
 	switch (alive_count) {
 		case 2:
 			break;
