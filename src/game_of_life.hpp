@@ -4,7 +4,7 @@
  * File Created: Wednesday, 27th March 2019 11:11:39 am
  * Author: Josiah Putman (joshikatsu@gmail.com)
  * -----
- * Last Modified: Friday, 29th March 2019 5:36:56 pm
+ * Last Modified: Friday, 29th March 2019 6:22:25 pm
  * Modified By: Josiah Putman (joshikatsu@gmail.com)
  */
 
@@ -26,7 +26,7 @@ class GameOfLife
 
     private:
         std::ostream& out;
-        bool matrix[W * H] = {false};
+        bool matrix[(W + 2) * (H + 2)] = {false};
         std::map<uint, bool> updates;
         void update();
         void update_cell(uint n);
